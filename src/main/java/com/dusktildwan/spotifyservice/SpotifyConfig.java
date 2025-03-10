@@ -1,4 +1,4 @@
-package com.dusktildwan.playlistgenerator;
+package com.dusktildwan.spotifyservice;
 
 import lombok.Getter;
 import lombok.Setter;

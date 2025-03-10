@@ -1,4 +1,4 @@
-package com.dusktildwan.playlistgenerator;
+package com.dusktildwan.spotifyservice;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;

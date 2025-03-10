@@ -1,4 +1,4 @@
-package com.dusktildwan.playlistgenerator;
+package com.dusktildwan.spotifyservice;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

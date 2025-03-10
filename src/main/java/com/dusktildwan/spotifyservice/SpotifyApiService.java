@@ -1,4 +1,4 @@
-package com.dusktildwan.playlistgenerator;
+package com.dusktildwan.spotifyservice;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

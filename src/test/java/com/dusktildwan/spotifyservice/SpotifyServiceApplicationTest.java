@@ -1,4 +1,4 @@
-package com.dusktildwan.playlistgenerator;
+package com.dusktildwan.spotifyservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-class PlaylistGeneratorApplicationTests {
+class SpotifyServiceApplicationTest {
 
 	@Test
 	void contextLoads() {

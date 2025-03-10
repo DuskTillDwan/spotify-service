@@ -1,4 +1,4 @@
-package com.dusktildwan.playlistgenerator;
+package com.dusktildwan.spotifyservice;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
