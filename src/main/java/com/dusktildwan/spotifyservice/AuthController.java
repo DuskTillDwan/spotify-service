@@ -7,28 +7,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RestController
 public class AuthController {
 
     private final SpotifyAuthService spotifyAuthService;
-    private final SpotifyConfig spotifyConfig;
 
-    public AuthController(SpotifyAuthService spotifyAuthService, SpotifyConfig spotifyConfig) {
+    public AuthController(SpotifyAuthService spotifyAuthService) {
         this.spotifyAuthService = spotifyAuthService;
-        this.spotifyConfig = spotifyConfig;
     }
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException {
-        String authorizationUrl = "https://accounts.spotify.com/authorize?" +
-                "client_id=" + spotifyConfig.getId() + "&" +
-                "response_type=code&" +
-                "redirect_uri=" + URLEncoder.encode(spotifyConfig.getRedirectUrl(), StandardCharsets.UTF_8) + "&" +
-                "scope=user-library-read user-library-modify playlist-modify-public playlist-modify-private";
-        response.sendRedirect(authorizationUrl);
+        response.sendRedirect(spotifyAuthService.buildAuthUrl());
     }
 
     @GetMapping("/callback")
