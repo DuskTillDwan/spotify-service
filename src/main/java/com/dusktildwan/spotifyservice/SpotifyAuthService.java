@@ -66,5 +66,12 @@ public class SpotifyAuthService {
         return jsonResponse.get("access_token").getAsString();
     }
 
+    public String buildAuthUrl() {
+        return "https://accounts.spotify.com/authorize?" +
+                "client_id=" + spotifyConfig.getId() + "&" +
+                "response_type=code&" +
+                "redirect_uri=" + URLEncoder.encode(spotifyConfig.getRedirectUrl(), StandardCharsets.UTF_8) + "&" +
+                "scope=user-library-read user-library-modify playlist-modify-public playlist-modify-private";
+    }
 }
 
