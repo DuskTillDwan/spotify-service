@@ -14,5 +14,8 @@ public class SpotifyConfig{
     private String secret;
     private String refreshToken;
     private String redirectUrl;
+    private String tokenUrl;
+    private String loginUrl;
+
 }
 
