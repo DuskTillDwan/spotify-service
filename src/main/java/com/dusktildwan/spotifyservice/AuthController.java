@@ -19,7 +19,7 @@ public class AuthController {
     }
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException {
-        response.sendRedirect(spotifyAuthService.buildAuthUrl());
+        response.sendRedirect(spotifyAuthService.authTokenUrl());
     }
 
     @GetMapping("/callback")
@@ -28,7 +28,7 @@ public class AuthController {
         // Now exchange the authorization code for an access token
         try {
             spotifyAuthService.exchangeCodeForToken(code);
-            return "Token received: " + spotifyAuthService.getAccessToken();  // Or redirect to another page or handle it as needed
+            return "Token received: successfully";  // Or redirect to another page or handle it as needed
         } catch (Exception e) {
             return "Error exchanging code for access token: " + e.getMessage();
         }

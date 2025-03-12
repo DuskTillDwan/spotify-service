@@ -20,7 +20,7 @@ import static java.net.http.HttpClient.newHttpClient;
 @Service
 public class SpotifyAuthService {
 
-    private final SpotifyConfig spotifyConfig;
+    final SpotifyConfig spotifyConfig;
 
     @Getter
     private String accessToken;
@@ -31,42 +31,45 @@ public class SpotifyAuthService {
 
     public void exchangeCodeForToken(String authorizationCode) throws IOException, InterruptedException {
         // Prepare the token request URL and parameters
-        String tokenUrl = "https://accounts.spotify.com/api/token";
-        String body = "grant_type=authorization_code&" +
-                "code=" + authorizationCode + "&" +
-                "redirect_uri=" + URLEncoder.encode(spotifyConfig.getRedirectUrl(), StandardCharsets.UTF_8) + "&" +
-                "client_id=" + spotifyConfig.getId() + "&" +
-                "client_secret=" + spotifyConfig.getSecret();
-
         // Create HTTP client and send the request to exchange the code for an access token
         HttpResponse<String> response;
         try (HttpClient client = newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(tokenUrl))
+                    .uri(URI.create(spotifyConfig.getTokenUrl()))
                     .header("Content-Type", "application/x-www-form-urlencoded")
-                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .POST(HttpRequest.BodyPublishers.ofString(buildBodyForExchange(spotifyConfig, authorizationCode)))
                     .build();
 
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         }
 
         if (response.statusCode() == 200) {
-            String responseBody = response.body();
-
             // Extract access token from response (you can use JSON parsing libraries like Jackson)
-            accessToken = extractAccessToken(responseBody);
+            accessToken = extractAccessToken(response.body());
         } else {
             throw new IOException("Failed to exchange code for access token: " + response.body());
         }
     }
 
-    public String extractAccessToken(String responseBody) {
+    public String authTokenUrl(){
+        return buildAuthorizeUrl(spotifyConfig);
+    }
+
+    private String extractAccessToken(String responseBody) {
         Gson gson = new Gson();
         JsonObject jsonResponse = gson.fromJson(responseBody, JsonObject.class);
         return jsonResponse.get("access_token").getAsString();
     }
 
-    public String buildAuthUrl() {
+    private String buildBodyForExchange(SpotifyConfig spotifyConfig, String authorizationCode) {
+        return "grant_type=authorization_code&" +
+                "code=" + authorizationCode + "&" +
+                "redirect_uri=" + URLEncoder.encode(spotifyConfig.getRedirectUrl(), StandardCharsets.UTF_8) + "&" +
+                "client_id=" + spotifyConfig.getId() + "&" +
+                "client_secret=" + spotifyConfig.getSecret();
+    }
+
+    private String buildAuthorizeUrl(SpotifyConfig spotifyConfig) {
         return "https://accounts.spotify.com/authorize?" +
                 "client_id=" + spotifyConfig.getId() + "&" +
                 "response_type=code&" +

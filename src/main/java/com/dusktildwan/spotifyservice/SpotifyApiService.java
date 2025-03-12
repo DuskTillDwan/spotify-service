@@ -17,7 +17,7 @@ public class SpotifyApiService {
         this.spotifyAuthService = spotifyAuthService;
     }
 
-    public HttpStatusCode addSongToPlaylist(String playlistId, String songUrl) throws RuntimeException, URISyntaxException {
+    public HttpStatusCode addSongToPlaylist(String playlistId, String songUrl) throws RuntimeException {
         String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
         String accessToken = spotifyAuthService.getAccessToken();
 
@@ -35,8 +35,7 @@ public class SpotifyApiService {
         return response.getStatusCode();
     }
 
-    private String buildSongUri(String songUrl) throws URISyntaxException {
-
+    private String buildSongUri(String songUrl) {
         try {
             URI songUri = new URI(songUrl);
             String path = songUri.getPath();
