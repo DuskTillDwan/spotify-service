@@ -24,11 +24,10 @@ public class AuthController {
 
     @GetMapping("/callback")
     public String handleRedirect(@RequestParam("code") String code) {
-        System.out.println("Received authorization code: " + code);
         // Now exchange the authorization code for an access token
         try {
             spotifyAuthService.exchangeCodeForToken(code);
-            return "Token received: successfully";  // Or redirect to another page or handle it as needed
+            return "Token received!";  // Or redirect to another page or handle it as needed
         } catch (Exception e) {
             return "Error exchanging code for access token: " + e.getMessage();
         }

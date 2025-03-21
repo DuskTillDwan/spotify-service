@@ -1,10 +1,11 @@
 package com.dusktildwan.spotifyservice;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.util.List;
 
 @RestController
 @RequestMapping("/spotify")
@@ -22,6 +23,15 @@ public class SpotifyController {
             return new ResponseEntity<>("Song added successfully: " + response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to add song: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping("/add-songs")
+    public ResponseEntity<String> addSongToPlaylist(@RequestParam String playlistId, @RequestBody List<String> songId) {
+        try {
+            HttpStatusCode response = spotifyApiService.addListOfSongsToPlaylist(playlistId, songId);
+            return new ResponseEntity<>("Song added successfully: " + response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to add songs: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
